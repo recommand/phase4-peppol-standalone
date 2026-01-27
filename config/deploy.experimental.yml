@@ -22,7 +22,7 @@ registry:
 
 builder:
   arch: amd64
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.multistage
 
 # volumes:
 #   - ap-config:/config
