@@ -56,6 +56,12 @@ public class PeppolSenderController
     return "pong";
   }
 
+  @GetMapping (path = "/up", produces = MediaType.TEXT_PLAIN_VALUE)
+  public String up ()
+  {
+    return "up";
+  }
+
   @PostMapping (path = "/sendas4/{senderId}/{receiverId}/{docTypeId}/{processId}/{countryC1}",
                 produces = MediaType.APPLICATION_JSON_VALUE)
   public String sendPeppolMessage (@RequestHeader (name = HEADER_X_TOKEN, required = true) final String xtoken,
