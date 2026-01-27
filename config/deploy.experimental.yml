@@ -1,6 +1,6 @@
-service: phase4-peppol-standalone
+service: phase4-peppol-standalone-experimental
 
-image: brbx-dev/phase4-peppol-standalone
+image: brbx-dev/phase4-peppol-standalone-experimental
 
 servers:
   web:
