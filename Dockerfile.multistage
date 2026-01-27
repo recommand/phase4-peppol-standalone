@@ -18,6 +18,9 @@
 # Multi-stage build: Build stage
 FROM eclipse-temurin:21-alpine AS builder
 
+# Cache busting argument (set to timestamp or random value to force rebuild)
+ARG CACHE_BUST=1
+
 # Install Maven
 RUN apk add --no-cache maven
 
