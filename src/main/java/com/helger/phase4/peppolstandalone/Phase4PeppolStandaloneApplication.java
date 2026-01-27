@@ -31,8 +31,37 @@ public class Phase4PeppolStandaloneApplication
 {
   public static void main (final String [] args)
   {
+    // Convert environment variables to system properties before Spring Boot starts.
+
+    convertEnvironmentVariablesToSystemProperties ();
+    
     // Log the current peppol.seatid from the application.properties file
     System.out.println("Current peppol.seatid: " + APConfig.getMyPeppolSeatID());
+
     SpringApplication.run (Phase4PeppolStandaloneApplication.class, args);
+  }
+
+  /**
+   * Converts environment variables to system properties using Spring Boot's conversion rules:
+   * - Converts to lowercase
+   * - Replaces underscores with dots
+   * This ensures properties are available before AS4Configuration initializes.
+   * 
+   * Spring Boot automatically does this conversion, but we need to do it early
+   * for system properties since AS4Configuration reads from System.getProperty().
+   */
+  private static void convertEnvironmentVariablesToSystemProperties ()
+  {
+    // Process all environment variables and convert them to system properties
+    // Spring Boot's rule: ENV_VAR_NAME -> env.var.name
+    // Example: PEPPOL_STAGE -> peppol.stage, PHASE4_ENDPOINT_ADDRESS -> phase4.endpoint.address
+    System.getenv ().forEach ((envKey, envValue) -> {
+      if (envValue != null && !envValue.isEmpty ())
+      {
+        // Convert ENV_VAR_NAME to env.var.name (Spring Boot's conversion rule)
+        final String propertyKey = envKey.toLowerCase ().replace ('_', '.');
+        System.setProperty (propertyKey, envValue);
+      }
+    });
   }
 }

@@ -1,0 +1,47 @@
+service: phase4-peppol-standalone
+
+image: brbx-dev/phase4-peppol-standalone
+
+servers:
+  web:
+    - 168.119.97.128
+
+proxy:
+  ssl: true
+  ssl_redirect: false
+  hosts:
+    - tmp-experiment-ap.net.recommand.com
+  app_port: 8080
+  response_timeout: 900 # 15 minutes
+
+registry:
+  server: registry.digitalocean.com
+  username: daan@onlineorb.it
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+  dockerfile: Dockerfile.multistage
+
+volumes:
+  - ap-config:/config
+  - ap-generated:/generated
+
+env:
+  clear:
+    PHASE4_ENDPOINT_ADDRESS: "https://tmp-experiment-ap.net.recommand.com/as4"
+    RECOMMAND_API_ENDPOINT: "https://peppol.recommand.com"
+    GLOBAL_DEBUG: "false"
+    GLOBAL_PRODUCTION: "true"
+    PEPPOL_STAGE: "test"
+    PEPPOL_OWNER_COUNTRYCODE: "BE"
+    PEPPOL_REPORTING_SCHEDULED: "false"
+    ORG_APACHE_WSS4J_CRYPTO_MERLIN_KEYSTORE_TYPE: "PKCS12"
+    ORG_APACHE_WSS4J_CRYPTO_MERLIN_KEYSTORE_FILE: "ap-test-g3.p12"
+  secret:
+    - PEPPOL_SEATID
+    - PEPPOL_REPORTING_SENDERID
+    - PHASE4_API_REQUIREDTOKEN
+    - RECOMMAND_API_INTERNAL_TOKEN
+    - ORG_APACHE_WSS4J_CRYPTO_MERLIN_KEYSTORE_PASSWORD
