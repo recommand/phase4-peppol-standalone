@@ -25,8 +25,8 @@ builder:
   dockerfile: Dockerfile.multistage
 
 volumes:
-  - ap-config:/config
-  - ap-generated:/generated
+  - ./ap-config:/config
+  - ./ap-generated:/generated
 
 env:
   clear:
