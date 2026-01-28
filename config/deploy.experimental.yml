@@ -31,7 +31,7 @@ volumes:
 env:
   clear:
     PHASE4_ENDPOINT_ADDRESS: "https://tmp-experiment-ap.net.recommand.com/as4"
-    RECOMMAND_API_ENDPOINT: "https://peppol.recommand.com"
+    RECOMMAND_API_ENDPOINT: "https://peppol.recommand.eu"
     GLOBAL_DEBUG: "false"
     GLOBAL_PRODUCTION: "true"
     GLOBAL_DATAPATH: "/generated"
