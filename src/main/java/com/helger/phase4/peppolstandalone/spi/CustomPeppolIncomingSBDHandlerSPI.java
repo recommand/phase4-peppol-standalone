@@ -132,7 +132,7 @@ public class CustomPeppolIncomingSBDHandlerSPI implements IPhase4PeppolIncomingS
     } catch (Exception e) {
       // In case there is an error, throw any Exception -> will lead to an AS4
       // Error Message to the sender
-      LOGGER.error("Error sending document to endpoint", e);
+      LOGGER.error("Error sending document to endpoint " + APConfig.getRecommandApiEndpoint() + "/api/peppol/internal/receiveDocument", e);
       throw e;
     }
 

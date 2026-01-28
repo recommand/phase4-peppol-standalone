@@ -138,6 +138,7 @@ Docker Compose automatically reads the `.env` file and uses these variables in `
 
 2. Verify SSL certificates are properly issued
 3. Test PEPPOL message sending/receiving
+4. Login to the SMP (at `https://smp.your-domain.com/secure`) and perform additional SML setup. The default login is `admin@helger.com` with password `password`. Change this immediately.
 
 ## Maintenance
 
@@ -160,3 +161,11 @@ Regular backups should be made of:
 - Configuration file in`src/main/resources/application.properties`
 - Certificate files (`cert-ap.jks` and `cert-smp.jks`)
 - Traefik's `acme.json` for SSL certificates
+
+## Certificate Setup
+
+For G2 certificates, the AP and SMP certificates must be appended with their root certificates.
+More information can be found [here](https://github.com/phax/phoss-smp/wiki/Certificate-setup).
+The root certificates can be downloaded [here](https://openpeppol.atlassian.net/wiki/spaces/OPMA/pages/193069072/Introduction+to+the+revised+PKI+Certificate+infrastructure+and+issuing+process#IntroductiontotherevisedPKICertificateinfrastructureandissuingprocess-Requirements).
+
+For G3 certificates, this has already been done by the certificate authority.
