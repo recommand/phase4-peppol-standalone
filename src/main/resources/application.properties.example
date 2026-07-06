@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2023-2025 Philip Helger (www.helger.com)
+# Copyright (C) 2023-2026 Philip Helger (www.helger.com)
 # philip[at]helger[dot]com
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,13 @@ peppol.reporting.senderid=0242:000000
 peppol.reporting.scheduled=true
 
 peppol.reporting.csv.filename=/generated/reporting.csv
+# Configure when the Peppol Reporting job runs each month
+# Day of month (1-31) when reporting should run. Default: 2 (2nd day of month)
+peppol.reporting.schedule.day-of-month=2
+# Hour of day (0-23) when reporting should run. Default: 5 (5 AM)
+peppol.reporting.schedule.hour=5
+# Minute of hour (0-59) when reporting should run. Default: 0
+peppol.reporting.schedule.minute=0
 
 # [CHANGEME] Public endpoint of this AP
 phase4.endpoint.address=http://localhost:8080/as4
@@ -61,10 +68,10 @@ recommand.api.endpoint=https://peppol.recommand.com
 phase4.dump.path=${global.datapath}phase4-dumps/
 
 # [CHANGEME] put your keystore details here
-org.apache.wss4j.crypto.merlin.keystore.type=JKS
-org.apache.wss4j.crypto.merlin.keystore.file=invalid-keystore-pw-peppol.jks
+org.apache.wss4j.crypto.merlin.keystore.type=pkcs12
+org.apache.wss4j.crypto.merlin.keystore.file=invalid-keystore-pw-peppol.p12
 org.apache.wss4j.crypto.merlin.keystore.password=peppol
-org.apache.wss4j.crypto.merlin.keystore.alias=1
+org.apache.wss4j.crypto.merlin.keystore.alias=private_key_for_pkcs12_certificate
 org.apache.wss4j.crypto.merlin.keystore.private.password=peppol
 
 # This is a default Peppol Truststore - should be refined for production
@@ -88,9 +95,12 @@ smpclient.truststore.path=truststore/2025/smp-test-truststore.p12
 smpclient.truststore.password=peppol
 
 # Outbound Proxy (if needed)
+#http.proxy.enabled=false
 #http.proxy.host=
 #http.proxy.port=
-#http.proxy.nonProxyHosts
+#http.proxy.username=
+#http.proxy.password=
+#http.proxy.nonProxyHosts=localhost|127.0.0.1
 
 # [CHANGEME] SpringBoot port
 server.port=8080

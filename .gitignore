@@ -1,7 +1,5 @@
-.classpath
-.project
+.claude/
 .settings/
-
 bin/
 target/
 generated/
@@ -15,6 +13,9 @@ private-*.properties
 /ap-generated/
 /smp-config/
 /smp-persistent/
+
+.classpath
 .DS_Store
 .env
-src/main/resources/application.properties
+src/main/resources/application.properties.project
+CLAUDE.md
