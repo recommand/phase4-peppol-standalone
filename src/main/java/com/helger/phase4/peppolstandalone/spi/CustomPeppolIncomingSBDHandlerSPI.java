@@ -50,7 +50,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.helger.xml.serialize.write.XMLWriter;
 import com.helger.phase4.util.Phase4Exception;
 
@@ -121,7 +121,7 @@ public class CustomPeppolIncomingSBDHandlerSPI implements IPhase4PeppolIncomingS
     payloadMap.put("as4ConversationId", as4ConversationId);
     payloadMap.put("sbdhInstanceIdentifier", instanceIdentifier);
 
-    String jsonPayload = new ObjectMapper().writeValueAsString(payloadMap);
+    String jsonPayload = JsonMapper.builder ().build ().writeValueAsString (payloadMap);
 
     LOGGER.info("Received document from " + senderId + " to " + receiverId + " with docTypeId " + docTypeId + " and processId " + processId + " and countryC1 " + countryC1);
     LOGGER.info("About to send document to: " + APConfig.getRecommandApiEndpoint() + "/api/peppol/internal/receiveDocument");
