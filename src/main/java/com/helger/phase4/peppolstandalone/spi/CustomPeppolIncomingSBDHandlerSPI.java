@@ -19,7 +19,6 @@ package com.helger.phase4.peppolstandalone.spi;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.unece.cefact.namespaces.sbdh.StandardBusinessDocument;
-import org.w3c.dom.Element;
 
 import com.helger.annotation.style.IsSPIImplementation;
 import com.helger.http.header.HttpHeaderMap;
@@ -27,9 +26,8 @@ import com.helger.peppol.reporting.api.PeppolReportingItem;
 import com.helger.peppol.reporting.api.backend.PeppolReportingBackend;
 import com.helger.peppol.reporting.api.backend.PeppolReportingBackendException;
 import com.helger.peppol.sbdh.PeppolSBDHData;
-import com.helger.peppol.sbdh.payload.PeppolSBDHPayloadBinaryMarshaller;
 import com.helger.peppol.sbdh.spec12.BinaryContentType;
-import com.helger.peppol.sbdh.spec12.ObjectFactory;
+import com.helger.peppol.sbdh.spec12.TextContentType;
 import com.helger.phase4.ebms3header.Ebms3UserMessage;
 import com.helger.phase4.error.AS4ErrorList;
 import com.helger.phase4.incoming.IAS4IncomingMessageMetadata;
@@ -44,12 +42,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.helger.xml.serialize.write.XMLWriter;
 import com.helger.phase4.util.Phase4Exception;
-import com.helger.security.certificate.CertificateHelper;
 
 /**
  * This is a way of handling incoming Peppol messages
@@ -84,6 +82,16 @@ public class CustomPeppolIncomingSBDHandlerSPI implements IPhase4PeppolIncomingS
     String processId = aPeppolSBD.getProcessAsIdentifier().getURIEncoded();
     String countryC1 = aPeppolSBD.getCountryC1();
     String body = XMLWriter.getNodeAsString(aPeppolSBD.getBusinessMessage());
+    String contentType = null;
+    if (aPeppolSBD.isNonXMLPayload())
+    {
+      final BinaryContentType aBinaryContent = aPeppolSBD.getBusinessMessageAsBinaryContent();
+      if (aBinaryContent != null)
+      {
+        contentType = aBinaryContent.getMimeType() != null ? aBinaryContent.getMimeType() : "application/octet-stream";
+        body = Base64.getEncoder().encodeToString(aBinaryContent.getValue ());
+      }
+    }
     String instanceIdentifier = aPeppolSBD.getInstanceIdentifier();
     
     // Extract AS4 message metadata
@@ -102,6 +110,8 @@ public class CustomPeppolIncomingSBDHandlerSPI implements IPhase4PeppolIncomingS
     payloadMap.put("processId", processId);
     payloadMap.put("countryC1", countryC1);
     payloadMap.put("body", body);
+    if (contentType != null)
+      payloadMap.put("contentType", contentType);
     payloadMap.put("as4MessageId", as4MessageId);
     payloadMap.put("as4ConversationId", as4ConversationId);
     payloadMap.put("sbdhInstanceIdentifier", instanceIdentifier);
